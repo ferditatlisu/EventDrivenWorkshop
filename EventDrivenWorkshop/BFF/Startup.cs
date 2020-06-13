@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Consumers;
+using BFF.Hubs;
 using EDCommon;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,7 @@ namespace BFF
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSignalR();
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<OrderResponseConsumer>();
@@ -46,6 +48,7 @@ namespace BFF
                 }));
             });
 
+            services.AddSingleton<OrderHub>();
             services.AddMassTransitHostedService();
         }
 
@@ -64,6 +67,7 @@ namespace BFF
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<OrderHub>("/orderHub");
             });
         }
     }
