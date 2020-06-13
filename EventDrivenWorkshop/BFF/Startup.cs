@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BFF.Consumers;
+using EDCommon;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +28,25 @@ namespace BFF
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<OrderResponseConsumer>();
+                x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    //config.UseHealthCheck(context);
+                    config.Host("rabbitmq", "/", host =>
+                    {
+                        host.Username("test");
+                        host.Password("test");
+                    });
+                    config.ReceiveEndpoint(CustomKey.RABBITMQ_ORDER_RESPONSE_ENDPOINT, ep =>
+                    {
+                        ep.ConfigureConsumer<OrderResponseConsumer>(context);
+                    });
+                }));
+            });
+
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
