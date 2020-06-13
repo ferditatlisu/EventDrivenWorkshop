@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using EDCommon;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BFF.Hubs
     {
         public override async Task OnConnectedAsync()
         {
+            var connectionId = Context.ConnectionId;
             await base.OnConnectedAsync();
         }
 
@@ -18,9 +20,16 @@ namespace BFF.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendOrder(string message)
+        public async Task SendOrder(string connectionId, string message)
         {
-            await Clients.All.SendAsync("Order", message);
+            if (Clients != null)
+            {
+                var client = Clients?.Client(connectionId);
+                if (client != null)
+                { 
+                    await client.SendAsync(CustomKey.SIGNALR_CHECKOUT_METHOD_NAME, connectionId, message);
+                }
+            }
         }
     }
 }

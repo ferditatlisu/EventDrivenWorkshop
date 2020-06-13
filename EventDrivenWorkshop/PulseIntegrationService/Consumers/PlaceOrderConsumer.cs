@@ -1,4 +1,5 @@
 ﻿using EDCommon.Pulses;
+using EDCommon.RabbitMQ;
 using MassTransit;
 using PulseIntegrationService.Procuders;
 using System;
@@ -12,13 +13,12 @@ namespace PulseIntegrationService.Consumers
     {
         public async Task Consume(ConsumeContext<IPlaceOrderRequest> context)
         {
-            var locationCode = context.Message.LocationCode;
-            var a = 3;
+            var bus = BusConfigurator.ConfigureBus();
 
             Pulse pulse = new Pulse();
             var response = await pulse.PlaceOrder(context.Message.LocationCode, context.Message);
 
-            PulseOrderProducer priceOrderProducer = new PulseOrderProducer();
+            PulseOrderProducer priceOrderProducer = new PulseOrderProducer(bus, context);
             await priceOrderProducer.PlaceOrder(context.Message.LocationCode, response);
         }
     }

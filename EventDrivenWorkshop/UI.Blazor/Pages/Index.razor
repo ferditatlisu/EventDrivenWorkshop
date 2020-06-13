@@ -1,0 +1,71 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
+@using System.Text
+@using EDCommon
+@using EDCommon.Model;
+@implements IDisposable
+@inject IJSRuntime jsRuntime
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<button class="btn btn-primary" @onclick="OnClickedButtonCheckout">CHECKOUT</button>
+
+@code
+{
+    private HubConnection hubConnection;
+    private List<string> messages = new List<string>();
+    private string userInput = "userInputData";
+    private string messageInput = "messageInputData";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+    public void Dispose()
+    {
+        //_ = hubConnection.DisposeAsync();
+    }
+
+    private async Task OnClickedButtonCheckout()
+    {
+        var connectionId = await ConnectToSignalR();
+
+        using HttpClient client = new HttpClient();
+        OrderRequest request = new OrderRequest
+        {
+            Id = "123",
+            LocationCode = "Locati",
+            ConnectionId = connectionId
+        };
+        var json = JsonConvert.SerializeObject(request);
+        var httpContent = new StringContent(json, Encoding.UTF8, CustomKey.JSON_CONTENT_TYPE);
+        await client.PostAsync("http://be/api/order", httpContent);
+    }
+
+    private async Task<string> ConnectToSignalR()
+    {
+        hubConnection = new HubConnectionBuilder()
+           .WithUrl("http://bff/orderHub")
+           .Build();
+
+        hubConnection.On<string, string>(CustomKey.SIGNALR_CHECKOUT_METHOD_NAME, async (user, message) =>
+        {
+            var encodedMsg = $"{user}: {message}";
+            messages.Add(encodedMsg);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+        var connectionId = hubConnection.ConnectionId;
+        return connectionId;
+    }
+}

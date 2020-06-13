@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using GreenPipes;
+using MassTransit;
 using MassTransit.RabbitMqTransport;
 using System;
 using System.Collections.Generic;

@@ -8,6 +8,7 @@ using EDCommon;
 using EDCommon.Model;
 using EDCommon.RabbitMQ;
 using EDCommon.Pulses;
+using MassTransit;
 
 namespace BE.Controllers
 {
@@ -24,11 +25,14 @@ namespace BE.Controllers
                 LocationCode = orderRequest.LocationCode
             };
 
-            //INFO : Make sure to check exchanges to binding to orderRequestQueue
             var bus = BusConfigurator.ConfigureBus();
             await bus.StartAsync();
-            var endPoint = await bus.GetSendEndpoint(new Uri($"{CustomKey.RABBITMQ_BASE_ENDPOINT}/{CustomKey.RABBITMQ_PRICE_ORDER_REQUEST_ENDPOINT}"));
-            await endPoint.Send<IPriceOrderRequest>(pulseRequest);
+            ISendEndpoint endPoint = await bus.GetSendEndpoint(new Uri($"{CustomKey.RABBITMQ_BASE_ENDPOINT}/{CustomKey.RABBITMQ_PRICE_ORDER_REQUEST_ENDPOINT}"));
+
+            await endPoint.Send<IPriceOrderRequest>(pulseRequest, x=>
+            {
+                x.Headers.Set(CustomKey.SIGNALR_CONNECTION_ID, orderRequest.ConnectionId);
+            });
 
             return Ok();
         }

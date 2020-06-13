@@ -41,7 +41,15 @@ services:
         - 15672:15672
     networks:
       - webnet
-
+  blazor:
+    image: ${DOCKER_REGISTRY-}blazor
+    build:
+      context: .
+      dockerfile: UI.Blazor/Dockerfile
+    ports:
+      - "8003:80"
+    networks:
+      - webnet
 networks:
   webnet:
     external: true

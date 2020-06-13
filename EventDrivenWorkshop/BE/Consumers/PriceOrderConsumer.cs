@@ -24,7 +24,7 @@ namespace BE.Consumers
             var bus = BusConfigurator.ConfigureBus();
             await bus.StartAsync();
             var endPoint = await bus.GetSendEndpoint(new Uri($"{CustomKey.RABBITMQ_BASE_ENDPOINT}/{CustomKey.RABBITMQ_PLACE_ORDER_REQUEST_ENDPOINT}"));
-            await endPoint.Send<IPlaceOrderRequest>(pulseRequest);
+            await endPoint.SendWithHeaders<IPlaceOrderRequest>(pulseRequest, context);
         }
     }
 }

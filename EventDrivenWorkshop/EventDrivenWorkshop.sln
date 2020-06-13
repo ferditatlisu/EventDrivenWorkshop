@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF", "BFF\BFF.csproj", "{A7F537CC-A9CA-475A-9B29-5897245BE61F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF", "BFF\BFF.csproj", "{A7F537CC-A9CA-475A-9B29-5897245BE61F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BE", "BE\BE.csproj", "{425AF9A5-ABC3-4B32-890C-2D7468923492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BE", "BE\BE.csproj", "{425AF9A5-ABC3-4B32-890C-2D7468923492}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulseIntegrationService", "PulseIntegrationService\PulseIntegrationService.csproj", "{03621410-1966-4214-A220-85B7C317CEF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PulseIntegrationService", "PulseIntegrationService\PulseIntegrationService.csproj", "{03621410-1966-4214-A220-85B7C317CEF8}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F2F50837-EEB0-4FD3-BCD3-12C9BE08007C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDCommon", "EDCommon\EDCommon.csproj", "{7B48E186-30A0-49E7-B145-FECD394FFDE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EDCommon", "EDCommon\EDCommon.csproj", "{7B48E186-30A0-49E7-B145-FECD394FFDE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Blazor", "UI.Blazor\UI.Blazor.csproj", "{2F295310-F6C6-440C-9201-786BE4F18535}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7B48E186-30A0-49E7-B145-FECD394FFDE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B48E186-30A0-49E7-B145-FECD394FFDE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B48E186-30A0-49E7-B145-FECD394FFDE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F295310-F6C6-440C-9201-786BE4F18535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F295310-F6C6-440C-9201-786BE4F18535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F295310-F6C6-440C-9201-786BE4F18535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F295310-F6C6-440C-9201-786BE4F18535}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,9 +6,11 @@ using BFF.Consumers;
 using BFF.Hubs;
 using EDCommon;
 using MassTransit;
+using MassTransit.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,8 +32,14 @@ namespace BFF
         {
             services.AddControllers();
             services.AddSignalR();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
             services.AddMassTransit(x =>
             {
+                //x.AddSignalRHub<OrderHub>();
                 x.AddConsumer<OrderResponseConsumer>();
                 x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
@@ -55,6 +63,8 @@ namespace BFF
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
