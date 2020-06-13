@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  be:
+    image: ${DOCKER_REGISTRY-}be
+    build:
+      context: .
+      dockerfile: BE/Dockerfile
