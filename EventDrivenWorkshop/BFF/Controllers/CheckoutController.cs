@@ -27,5 +27,12 @@ namespace BFF.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            await Task.Delay(10000);
+            return Ok();
+        }
     }
 }

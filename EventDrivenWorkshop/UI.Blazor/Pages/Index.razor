@@ -7,13 +7,21 @@
 @implements IDisposable
 @inject IJSRuntime jsRuntime
 
-<h1>Hello, world!</h1>
+<h1>NEW CHECKOUT!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <button class="btn btn-primary" @onclick="OnClickedButtonCheckout">CHECKOUT</button>
+<br>
+<br>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<p>Current count: @currentCount</p>
+
+<h1>@orderStatus</h1>
+
+
 
 @code
 {
@@ -21,6 +29,8 @@ Welcome to your new app.
     private List<string> messages = new List<string>();
     private string userInput = "userInputData";
     private string messageInput = "messageInputData";
+    private int currentCount = 0;
+    private string orderStatus = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,7 +58,8 @@ Welcome to your new app.
         };
         var json = JsonConvert.SerializeObject(request);
         var httpContent = new StringContent(json, Encoding.UTF8, CustomKey.JSON_CONTENT_TYPE);
-        await client.PostAsync("http://be/api/order", httpContent);
+        await client.PostAsync("http://bff/api/checkout", httpContent);
+        orderStatus = "Processing Order";
     }
 
     private async Task<string> ConnectToSignalR()
@@ -62,10 +73,17 @@ Welcome to your new app.
             var encodedMsg = $"{user}: {message}";
             messages.Add(encodedMsg);
             StateHasChanged();
+            orderStatus = "Order completed!";
         });
 
         await hubConnection.StartAsync();
         var connectionId = hubConnection.ConnectionId;
         return connectionId;
+    }
+
+
+    private void IncrementCount()
+    {
+        currentCount++;
     }
 }
