@@ -32,6 +32,7 @@ namespace BE.Controllers
             await endPoint.Send<IPriceOrderRequest>(pulseRequest, x=>
             {
                 x.Headers.Set(CustomKey.SIGNALR_CONNECTION_ID, orderRequest.ConnectionId);
+                x.Headers.Set(CustomKey.ORDER_REQUEST_KEY, pulseRequest);
             });
 
             return Ok();

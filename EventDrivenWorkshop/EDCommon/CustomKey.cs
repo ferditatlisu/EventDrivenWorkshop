@@ -25,5 +25,7 @@ namespace EDCommon
         public const string RABBITMQ_ORDER_RESPONSE_ENDPOINT = "orderResponseQueue";
 
         #endregion
+
+        public const string ORDER_REQUEST_KEY = "ORDER_REQUEST_KEY";
     }
 }

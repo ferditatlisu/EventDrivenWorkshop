@@ -15,12 +15,7 @@ namespace BE.Consumers
         {
             // do somethings ....
 
-            PulseRequest pulseRequest = new PulseRequest
-            {
-                Id = "id",
-                LocationCode = "Loc",
-            };
-
+            var pulseRequest = context.Headers.Get<PulseRequest>(CustomKey.ORDER_REQUEST_KEY);
             var bus = BusConfigurator.ConfigureBus();
             await bus.StartAsync();
             var endPoint = await bus.GetSendEndpoint(new Uri($"{CustomKey.RABBITMQ_BASE_ENDPOINT}/{CustomKey.RABBITMQ_PLACE_ORDER_REQUEST_ENDPOINT}"));
